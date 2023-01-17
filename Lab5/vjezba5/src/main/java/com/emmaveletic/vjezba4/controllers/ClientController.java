@@ -24,7 +24,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Client> getById(@PathVariable Long id){
+    public Client getById(@PathVariable Long id){
         return service.findById(id);
     }
 
@@ -35,7 +35,7 @@ public class ClientController {
         }
         List<Client> clientList = (List<Client>) service.findAll();
         for(int i=0;i<clientList.size();i++){
-            if(!service.existsAdress(newClient)){
+            if(!service.existsAddress(newClient)){
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
             if(!service.existsDevice(newClient)){
@@ -49,7 +49,7 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<Client> update(@RequestBody Client client,@PathVariable Long id){
         try{
-            Optional<Client> temp = service.findById(id);
+            Client temp = service.findById(id);
             client.setId(id);
             service.save(client);
             return new ResponseEntity<>(HttpStatus.OK);

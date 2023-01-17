@@ -1,7 +1,5 @@
 package com.emmaveletic.vjezba4.controllers;
 
-
-import com.emmaveletic.vjezba4.entities.Client;
 import com.emmaveletic.vjezba4.entities.Data;
 import com.emmaveletic.vjezba4.services.DataService;
 import lombok.AllArgsConstructor;
@@ -10,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
+import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @RequestMapping("/data")
 @AllArgsConstructor
@@ -23,33 +21,31 @@ public class DataController {
     private DataService service;
 
     @GetMapping()
-    public Iterable<Data> getAll(){
+    public List<Data> getAll(){
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Data> getById(@PathVariable Long id){
+    public Data getById(@PathVariable Long id){
         return service.findById(id);
     }
 
-    @RequestMapping(value="/year", method=RequestMethod.GET) //@ResponseBody
-    public  ResponseEntity<String> getYear(@RequestParam("search") Optional<Integer> search){
+    @GetMapping(value="/year")
+    @ResponseBody
+    public  ResponseEntity<String> getYear(@RequestParam("year") Integer searchYear){ //lista modela?
             try{
-                List<Data> allData = (List<Data>) service.findAll();
-                double sum = 0;
+                List<Data> allData = service.findAll();
+                double sumAll = 0.0;
                 for (Data data : allData) {
-                    System.out.print(data.toString());
-                    String[] date = data.getDate().split(".");
-                    System.out.print(date[0]);
-                    System.out.print(date[1]);
-                    System.out.print(date[2]);
-                    Optional<Integer> yearInDate = Optional.of(Integer.parseInt(date[2]));
-                    if (search==yearInDate) {
-                        sum += data.getValue();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(data.getDate());
+                    Integer yearInDate = cal.get(Calendar.YEAR);
+                    if (searchYear.equals(yearInDate)) {
+                        sumAll = Double.sum(sumAll,data.getValue());
                     }
                 }
-                System.out.print("year " + search + " total spent " + sum);
-                return new ResponseEntity<>("year " + search + " total spent " + sum,HttpStatus.OK);
+                System.out.print("year " + searchYear + " total spent " + sumAll);
+                return new ResponseEntity<>("year " + searchYear + " total spent " + sumAll,HttpStatus.OK);
             }
             catch (NoSuchElementException e){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,34 +53,33 @@ public class DataController {
         }
 
     @RequestMapping(value="/year+month", method=RequestMethod.GET) //@ResponseBody
-    public  ResponseEntity<String> getYearAndMonth(@RequestParam("searchYear") Optional<Integer> searchYear, @RequestParam("searchMonth") Optional<Integer> searchMonth) {
+    public  ResponseEntity<String> getYearAndMonth(@RequestParam("year") Integer searchYear, @RequestParam("month") Integer searchMonth) {
             try{
-                List<Data> allData = (List<Data>) service.findAll();
-                double sum = 0;
+                List<Data> allData = service.findAll();
+                double sumAll = 0.0;
                 for (Data data : allData) {
                     System.out.print(data.toString());
-                    String[] date = data.getDate().split(".");
-                    System.out.print(date[0]);
-                    System.out.print(date[1]);
-                    System.out.print(date[2]);
-                    Optional<Integer> monthInDate = Optional.of(Integer.parseInt(date[1]));
-                    Optional<Integer> yearInDate = Optional.of(Integer.parseInt(date[2]));
-                    if (searchYear==yearInDate && searchMonth==monthInDate) {
-                        sum += data.getValue();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(data.getDate());
+                    Integer monthInDate = cal.get(Calendar.MONTH) + 1;
+                    Integer yearInDate = cal.get(Calendar.YEAR);
+                    if (searchYear.equals(yearInDate) && searchMonth.equals(monthInDate)) {
+                        sumAll = Double.sum(sumAll,data.getValue());
                     }
                 }
-                System.out.print("year " + searchYear + "month " + searchMonth + " total spent " + sum);
-                return new ResponseEntity<>("year " + searchYear + "month " + searchMonth + " total spent " + sum,HttpStatus.OK);
+                System.out.print("year " + searchYear + " month " + searchMonth + " total spent " + sumAll);
+                return new ResponseEntity<>("year " + searchYear + " month " + searchMonth + " total spent " + sumAll,HttpStatus.OK);
             }
             catch (NoSuchElementException e){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
     }
 
-    @RequestMapping(value="/all_year", method=RequestMethod.GET) //@ResponseBody
-    public  ResponseEntity<String> getYearByMonths(@RequestParam("searchYear") Optional<Integer> searchYear) {
+    @GetMapping(value="/all_year")
+    @ResponseBody
+    public  ResponseEntity<String> getYearByMonths(@RequestParam("year") Integer searchYear) {
         try {
-            List<Data> allData = (List<Data>) service.findAll();
+            List<Data> allData = service.findAll();
             double sum1 = 0;
             double sum2 = 0;
             double sum3 = 0;
@@ -99,37 +94,50 @@ public class DataController {
             double sum12 = 0;
             for (Data data : allData) {
                 System.out.print(data.toString());
-                String[] date = data.getDate().split(".");
-                System.out.print(date[0]);
-                System.out.print(date[1]);
-                System.out.print(date[2]);
-                Optional<Integer> monthInDate = Optional.of(Integer.parseInt(date[1]));
-                Optional<Integer> yearInDate = Optional.of(Integer.parseInt(date[2]));
-                if (searchYear == yearInDate) {
-                    if (monthInDate == Optional.of(1)) {
-                        sum1 += data.getValue();
-                    } else if (monthInDate == Optional.of(2)) {
-                        sum2 += data.getValue();
-                    } else if (monthInDate == Optional.of(3)) {
-                        sum3 += data.getValue();
-                    } else if (monthInDate == Optional.of(4)) {
-                        sum4 += data.getValue();
-                    } else if (monthInDate == Optional.of(5)) {
-                        sum5 += data.getValue();
-                    } else if (monthInDate == Optional.of(6)) {
-                        sum6 += data.getValue();
-                    } else if (monthInDate == Optional.of(7)) {
-                        sum7 += data.getValue();
-                    } else if (monthInDate == Optional.of(8)) {
-                        sum8 += data.getValue();
-                    } else if (monthInDate == Optional.of(9)) {
-                        sum9 += data.getValue();
-                    } else if (monthInDate == Optional.of(10)) {
-                        sum10 += data.getValue();
-                    } else if (monthInDate == Optional.of(11)) {
-                        sum11 += data.getValue();
-                    } else if (monthInDate == Optional.of(12)) {
-                        sum12 += data.getValue();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(data.getDate());
+                Integer monthInDate = cal.get(Calendar.MONTH) + 1;
+                Integer yearInDate = cal.get(Calendar.YEAR);
+                if (searchYear.equals(yearInDate)) {
+                    switch (monthInDate) {
+                        case 1:
+                            sum1 += data.getValue();
+                            break;
+                        case 2:
+                            sum2 += data.getValue();
+                            break;
+                        case 3:
+                            sum3 += data.getValue();
+                            break;
+                        case 4:
+                            sum4 += data.getValue();
+                            break;
+                        case 5:
+                            sum5 += data.getValue();
+                            break;
+                        case 6:
+                            sum6 += data.getValue();
+                            break;
+                        case 7:
+                            sum7 += data.getValue();
+                            break;
+                        case 8:
+                            sum8 += data.getValue();
+                            break;
+                        case 9:
+                            sum9 += data.getValue();
+                            break;
+                        case 10:
+                            sum10 += data.getValue();
+                            break;
+                        case 11:
+                            sum11 += data.getValue();
+                            break;
+                        case 12:
+                            sum12 += data.getValue();
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -169,18 +177,18 @@ public class DataController {
                     case 11:
                         message += "\nNovember: " + sum11;
                         break;
-                    default:
+                    case 12:
                         message += "\nDecember: " + sum12;
                         break;
+                    default:
+                        break;
                 }
-
-                return new ResponseEntity<>(message, HttpStatus.OK);
             }
+            return new ResponseEntity<>(message, HttpStatus.OK);
         }
         catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping()
@@ -191,7 +199,7 @@ public class DataController {
     @PutMapping("/{id}")
     public ResponseEntity<Data> update(@RequestBody Data elData, @PathVariable Long id){
         try{
-            Optional<Data> temp = service.findById(id);
+            Data temp = service.findById(id);
             elData.setId(id);
             service.save(elData);
             return new ResponseEntity<>(HttpStatus.OK);

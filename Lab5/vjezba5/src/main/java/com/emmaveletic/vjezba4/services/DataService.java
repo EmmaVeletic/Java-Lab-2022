@@ -5,6 +5,9 @@ import com.emmaveletic.vjezba4.entities.Data;
 import com.emmaveletic.vjezba4.repositories.DataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,53 +15,57 @@ public class DataService {
     @Autowired
     private DataRepository repository;
 
-    public <S extends Data> S save(S entity) {
+    public Data save(Data entity) {
         return repository.save(entity);
     }
 
-    public <S extends Data> Iterable<S> saveAll(Iterable<S> entities) {
-        return repository.saveAll(entities);
+    public Data findById(long id) {
+        return repository.findById(id)
+                .orElseGet(null);
     }
 
-    public Optional<Data> findById(Long aLong) {
-        return repository.findById(aLong);
+    public boolean existsById(long id) {
+        return repository.existsById(id);
     }
 
-    public boolean existsById(Long aLong) {
-        return repository.existsById(aLong);
+    public List<Data> findAll() {
+        List<Data> data = new ArrayList<>();
+        repository.findAll()
+                .forEach(electricityData -> data.add(electricityData));
+        if (data != null) {
+            return data;
+        } else {
+            throw new RuntimeException("no data found");
+        }
     }
 
-    public Iterable<Data> findAll() {
-        return repository.findAll();
-    }
-
-    public Iterable<Data> findAllById(Iterable<Long> longs) {
-        return repository.findAllById(longs);
+    public List<Data> findAllById(Iterable<Long> longs) {
+        List<Data> data = new ArrayList<>();
+        repository.findAll().
+                forEach(electricityData -> data.add(electricityData));
+        if (data != null) {
+            return data;
+        } else {
+            throw new RuntimeException("no data found");
+        }
     }
 
     public long count() {
         return repository.count();
     }
 
-    public void deleteById(Long aLong) {
-        repository.deleteById(aLong);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     public void delete(Data entity) {
         repository.delete(entity);
     }
 
-    public void deleteAllById(Iterable<? extends Long> longs) {
-        repository.deleteAllById(longs);
-    }
-
-    public void deleteAll(Iterable<? extends Data> entities) {
-        repository.deleteAll(entities);
-    }
-
     public void deleteAll() {
         repository.deleteAll();
     }
+
 
 }
 

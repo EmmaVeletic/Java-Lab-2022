@@ -4,6 +4,9 @@ import com.emmaveletic.vjezba4.entities.Address;
 import com.emmaveletic.vjezba4.repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -11,52 +14,40 @@ public class AddressService {
     @Autowired
     private AddressRepository repository;
 
-    public <S extends Address> S save(S entity) {
-        return repository.save(entity);
+    public Address save(Address address) {
+        return repository.save(address);
     }
 
-    public <S extends Address> Iterable<S> saveAll(Iterable<S> entities) {
-        return repository.saveAll(entities);
+    public Address findById(long id) {
+        return repository.findById(id)
+                .orElseGet(null);
     }
 
-    public Optional<Address> findById(Long aLong) {
-        return repository.findById(aLong);
+    public boolean existsById(long id) {
+        return repository.existsById(id);
     }
 
-    public boolean existsById(Long aLong) {
-        return repository.existsById(aLong);
-    }
-
-    public Iterable<Address> findAll() {
-        return repository.findAll();
-    }
-
-    public Iterable<Address> findAllById(Iterable<Long> longs) {
-        return repository.findAllById(longs);
+    public List<Address> findAll() {
+        List<Address> data = new ArrayList<>();
+        repository.findAll()
+                .forEach(address -> data.add(address));
+        if (data != null) {
+            return data;
+        } else {
+            throw new RuntimeException("no data found");
+        }
     }
 
     public long count() {
         return repository.count();
     }
 
-    public void deleteById(Long aLong) {
-        repository.deleteById(aLong);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
-    public void delete(Address entity) {
-        repository.delete(entity);
-    }
-
-    public void deleteAllById(Iterable<? extends Long> longs) {
-        repository.deleteAllById(longs);
-    }
-
-    public void deleteAll(Iterable<? extends Address> entities) {
-        repository.deleteAll(entities);
-    }
-
-    public void deleteAll() {
-        repository.deleteAll();
+    public void delete(Address address) {
+        repository.delete(address);
     }
 
 }

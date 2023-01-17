@@ -5,6 +5,7 @@ import com.emmaveletic.vjezba4.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,57 +14,48 @@ public class ClientService {
     @Autowired
     private ClientRepository repository;
 
-    public <S extends Client> S save(S entity) {
-        return repository.save(entity);
+    public Client save(Client client) {
+        return repository.save(client);
     }
 
-    public <S extends Client> Iterable<S> saveAll(Iterable<S> entities) {
-        return repository.saveAll(entities);
+    public Client findById(long id) {
+        return repository.findById(id).orElseGet(null);
     }
 
-    public Optional<Client> findById(Long aLong) {
-        return repository.findById(aLong);
+    public boolean existsById(long id) {
+        return repository.existsById(id);
     }
 
-    public boolean existsById(Long aLong) {
-        return repository.existsById(aLong);
-    }
-
-    public Iterable<Client> findAll() {
-        return repository.findAll();
-    }
-
-    public Iterable<Client> findAllById(Iterable<Long> longs) {
-        return repository.findAllById(longs);
+    public List<Client> findAll() {
+        List<Client> data = new ArrayList<>();
+        repository.findAll()
+                .forEach(client -> data.add(client));
+        if (data != null) {
+            return data;
+        } else {
+            throw new RuntimeException("no data found");
+        }
     }
 
     public long count() {
         return repository.count();
     }
 
-    public void deleteById(Long aLong) {
-        repository.deleteById(aLong);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     public void delete(Client entity) {
         repository.delete(entity);
     }
 
-    public void deleteAllById(Iterable<? extends Long> longs) {
-        repository.deleteAllById(longs);
-    }
-
-    public void deleteAll(Iterable<? extends Client> entities) {
-        repository.deleteAll(entities);
-    }
-
     public void deleteAll() {
         repository.deleteAll();
     }
 
-     public boolean existsAdress(Client newClient){
-        return repository.existsAdress(newClient);
-     }
+    public boolean existsAddress(Client newClient){
+        return repository.existsAddress(newClient);
+    }
 
     public boolean existsDevice(Client newClient){
         return repository.existsDevice(newClient);

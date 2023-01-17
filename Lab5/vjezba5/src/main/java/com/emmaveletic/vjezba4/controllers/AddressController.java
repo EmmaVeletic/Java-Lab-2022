@@ -25,7 +25,7 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Address> getById(@PathVariable Long id){
+    public Address getById(@PathVariable Long id){
         return service.findById(id);
     }
 
@@ -40,7 +40,7 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<Address> update(@RequestBody Address adress,@PathVariable Long id){
         try{
-            Optional<Address> temp = service.findById(id);
+            Address temp = service.findById(id);
             adress.setId(id);
             service.save(adress);
             return new ResponseEntity<>(HttpStatus.OK);

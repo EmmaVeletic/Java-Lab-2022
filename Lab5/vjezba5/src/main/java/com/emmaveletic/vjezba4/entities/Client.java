@@ -42,51 +42,12 @@ public class Client {
     }
     
 
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public List<Device> getDevices() {
-		return devices;
-	}
-
-	public void setDevices(List<Device> devices) {
-		this.devices = devices;
-	}
-
-	public Address getAdress() {
-		return adress;
-	}
-
-	public void setAdress(Address adress) {
-		this.adress = adress;
-	}
-
 	@Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "firstName = " + firstName + ", " +
                 "lastName = " + lastName + ")";
-	}}
+	}
+}
 
 	

@@ -1,8 +1,8 @@
 package com.emmaveletic.vjezba4.controllers;
 
-import com.emmaveletic.vjezba4.entities.Client;
+
 import com.emmaveletic.vjezba4.entities.Device;
-import com.emmaveletic.vjezba4.entities.Data;
+
 import com.emmaveletic.vjezba4.services.DeviceService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @RequestMapping("/device")
 @AllArgsConstructor
@@ -21,12 +22,12 @@ public class DeviceController {
     private DeviceService service;
 
     @GetMapping()
-    public Iterable<Device> getAll(){
+    public List<Device> getAll(){
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Device> getById(@PathVariable Long id){
+    public Device getById(@PathVariable Long id){
         return service.findById(id);
     }
 
@@ -38,7 +39,7 @@ public class DeviceController {
     @PutMapping("/{id}")
     public ResponseEntity<Device> update(@RequestBody Device device, @PathVariable Long id){
         try{
-            Optional<Device> temp = service.findById(id);
+            Device temp = service.findById(id);
             device.setId(id);
             service.save(device);
             return new ResponseEntity<>(HttpStatus.OK);

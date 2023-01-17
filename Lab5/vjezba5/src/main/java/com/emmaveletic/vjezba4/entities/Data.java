@@ -2,11 +2,13 @@ package com.emmaveletic.vjezba4.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
+
 import javax.persistence.*;
+
 
 @Entity
 @Getter
@@ -19,7 +21,7 @@ public class Data {
     private Long id;
 
     @Column(name = "date")
-    private String date;
+    private Date date;
 
     @Column(name = "time")
     private String time;
@@ -32,68 +34,6 @@ public class Data {
     @JoinColumn(name = "device_id")
     private Device device;
     
-    
-
-    public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-
-	public String getDate() {
-		return date;
-	}
-
-
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-
-
-	public String getTime() {
-		return time;
-	}
-
-
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-
-
-	public Double getValue() {
-		return value;
-	}
-
-
-
-	public void setValue(Double value) {
-		this.value = value;
-	}
-
-
-
-	public Device getDevice() {
-		return device;
-	}
-
-
-
-	public void setDevice(Device device) {
-		this.device = device;
-	}
-
-
-
 	@Override
     public String toString() {
         return getClass().getSimpleName() + "(" +

@@ -30,58 +30,9 @@ public class Device {
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.MERGE, orphanRemoval = true)
     @JsonManagedReference
-    private List<Data> electricityData = new ArrayList<>();
+    private List<Data> data = new ArrayList<>();
     
-    
-
-    public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-
-	public String getName() {
-		return name;
-	}
-
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-
-	public Client getClient() {
-		return client;
-	}
-
-
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-
-
-	public List<Data> getElectricityData() {
-		return electricityData;
-	}
-
-
-
-	public void setElectricityData(List<Data> electricityData) {
-		this.electricityData = electricityData;
-	}
-
-
-
+  
 	@Override
     public String toString() {
         return getClass().getSimpleName() + "(" +

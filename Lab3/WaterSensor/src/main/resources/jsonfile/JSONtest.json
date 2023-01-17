@@ -1,0 +1,20 @@
+{
+  "broker": "tcp://localhost:",
+   "topic" : "topic",
+  "sensorCollection": [
+    {
+      "name": "Temperature",
+	  "type": "int16",
+	  "factor": 10,
+      "unit": "C",
+	  "value": 2500
+    },
+    {
+      "name": "Pressure",
+	  "type": "uint16",
+	  "factor": 1000,
+      "unit": "Bar",
+	  "value": 32
+    }
+  ]
+}
