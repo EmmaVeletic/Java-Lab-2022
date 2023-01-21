@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Create Data</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}" />
+</head>
+<body>
+<h1 style="margin:50px">Create New Data</h1>
+<hr/>
+<form th:object="${data}" th:action="@{/saveData}" method="post" style="margin:50px">
+    <input type="number" placeholder="Enter data value" th:field="*{value}"/>
+    <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+    <br/><br/>
+    <input type="time" placeholder="Enter time of the data" th:field="*{time}"/>
+    <span th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></span>
+    <br/><br/>
+    <input type="date" placeholder="Enter date" th:field="*{date}"/>
+    <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+    <br/><br/>
+    <select th:field="*{deviceId}">
+        <span th:each="device: ${devices}">
+            <option th:value="${device.id}" th:text="${device.name}"></option>
+        </span>
+    </select>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
